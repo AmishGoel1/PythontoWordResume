@@ -1,0 +1,9 @@
+summary: "Summary text"
+skills:
+  - Skill 1: "Up, to, 7, skills"
+  - Skill 2: "Up, to, 7, skills"
+  - Skill 3: "Up, to, 7, skills"
+projects:
+  - Project 1: ['Point 1', 'Point 2', 'Point 3']
+  - Project 2: ['Point 1', 'Point 2', 'Point 3']
+  - Project 3: ['Point 1', 'Point 2', 'Point 3']
