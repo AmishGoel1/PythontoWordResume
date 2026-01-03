@@ -3,6 +3,17 @@ skills:
   - Skill 1: "Up, to, 7, skills"
   - Skill 2: "Up, to, 7, skills"
   - Skill 3: "Up, to, 7, skills"
+work:
+  - Experience 1: 
+    - Title: 'Title at company 1'
+    - Company: 'Name of Company'
+    - Date: 'Date range of experience'
+    - Points: ['Point1', 'Point2', 'Point3']
+  - Experience 2: 
+    - Title: 'Title at company 1'
+    - Company: 'Name of Company'
+    - Date: 'Date range of experience'
+    - Points: ['Point1', 'Point2', 'Point3']
 projects:
   - Project 1: ['Point 1', 'Point 2', 'Point 3']
   - Project 2: ['Point 1', 'Point 2', 'Point 3']

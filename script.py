@@ -42,6 +42,11 @@ for section in sections:
         for skill in data['skills']:
            for key, value in skill.items():
                 doc.add_paragraph(f"{key}: {value}", style='List Bullet')
+    
+    elif section == 'Work Experience':
+        for work in data['work']:
+            for key, value in work.items():
+                doc.add_paragraph(f"{value[0]['Title']}, {value[1]['Company']} {value[2]['Date']}")
 
     elif section == 'Projects':
         for project in data['projects']:
