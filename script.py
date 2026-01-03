@@ -1,6 +1,6 @@
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Pt
+from docx.shared import Pt, Inches
 import yaml
 
 with open('points.yaml', 'r') as f:
@@ -61,6 +61,13 @@ for section in sections:
                 doc.add_paragraph(key)
                 for point in value:
                     doc.add_paragraph(f"{point}", style='List Bullet')
+
+section = doc.sections[0]
+
+section.left_margin = Inches(0.5)
+section.right_margin = Inches(0.5)
+section.top_margin = Inches(0.437)
+section.bottom_margin = Inches(0.287)
 
 doc.save('sapmle1.docx')
 
