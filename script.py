@@ -69,12 +69,24 @@ for section in sections:
                     currentworkpoint.runs[0].font.name = 'Times New Roman'
                     currentworkpoint.paragraph_format.space_after = Pt(3)
             doc.add_paragraph()
+    
     elif section == 'Projects':
-        for project in data['projects']:
+        for i, project in enumerate(data['projects']):
            for key, value in project.items():
-                doc.add_paragraph(key)
+                projectname = doc.add_paragraph(key)
+                projectname.runs[0].bold = True
+                projectname.runs[0].font.size = Pt(12)
+                projectname.runs[0].font.name = 'Times New Roman'
+                if i == 0:
+                    projectname.paragraph_format.space_before = Pt(0)
+                else: 
+                    projectname.paragraph_format.space_before = Pt(9)
                 for point in value:
-                    doc.add_paragraph(f"{point}", style='List Bullet')
+                    currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
+                    currentpoint.runs[0].font.name = 'Times New Roman'
+                    currentpoint.runs[0].font.size = Pt(12)
+                    currentpoint.paragraph_format.space_after = Pt(3)
+                    currentpoint.paragraph_format.space_before = Pt(15)
 
 section = doc.sections[0]
 
