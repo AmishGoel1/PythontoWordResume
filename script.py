@@ -15,45 +15,37 @@ sections = ('Professional Summary', 'Core Skills', 'Work Experience', 'Education
 
 doc = Document()
 
+def formatting(pararun, bold_or_not=True, font_size=Pt(12), font_name='Times New Roman'):
+    pararun.font.name = font_name
+    pararun.bold = bold_or_not
+    pararun.font.size = font_size
+
 nametext = doc.add_paragraph('AMISH GOEL')
-nametextrun = nametext.runs[0]
-nametextrun.font.name = 'Times New Roman'
-nametextrun.bold = True
-nametextrun.font.size = Pt(18)
+formatting(pararun=nametext.runs[0], font_size=Pt(18))
 nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
 nametext.paragraph_format.space_after = Pt(0)
 
 linkspara = doc.add_paragraph(f"{email} | LinkedIn | GitHub")
-linkspara.runs[0].font.name = 'Times New Roman'
-linkspara.runs[0].font.size = Pt(14)
+formatting(linkspara.runs[0], False, Pt(14))
 linkspara.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 for section in sections:
     currentsection = doc.add_paragraph(f"{section}\n")
-    currentrun = currentsection.runs[0]
-    currentrun.font.name = 'Times New Roman'
-    currentrun.font.size = Pt(13)
-    currentrun.bold= True
+    formatting(currentsection.runs[0], True, Pt(13))
     currentsection.paragraph_format.space_after = Pt(0)
     
     if section == 'Professional Summary':
         summarytext = doc.add_paragraph(f"{data['summary']}")
-        
-        summarytext.runs[0].font.size = Pt(12)
-        summarytext.runs[0].font.name = 'Times New Roman'
-        
+        formatting(summarytext.runs[0], False)     
         # summarytext.paragraph_format.line_spacing = 1.05
     
     elif section == 'Core Skills':
         for skill in data['skills']:
            for key, value in skill.items():
                 currentpoint = doc.add_paragraph(f"{key}: ")
-                currentpoint.runs[0].bold = True
-                currentpoint.runs[0].font.name = 'Times New Roman'
-                currentpoint.runs[0].font.size = Pt(12)
+                formatting(currentpoint.runs[0])
                 valuerun = currentpoint.add_run(f"{value}")
-                valuerun.font.size = Pt(12)
-                valuerun.font.name = 'Times New Roman'
+                formatting(valuerun, False)
                 currentpoint.paragraph_format.space_after = Pt(6)
                 currentpoint.paragraph_format.space_after = Pt(3)
         
@@ -65,8 +57,7 @@ for section in sections:
                 doc.add_paragraph(f"{value[0]['Title']}, {value[1]['Company']} {value[2]['Date']}")
                 for point in value[3]['Points']:
                     currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
-                    currentworkpoint.runs[0].font.size = Pt(12)
-                    currentworkpoint.runs[0].font.name = 'Times New Roman'
+                    formatting(currentworkpoint.runs[0], False)
                     currentworkpoint.paragraph_format.space_after = Pt(3)
             doc.add_paragraph()
     
@@ -74,17 +65,14 @@ for section in sections:
         for i, project in enumerate(data['projects']):
            for key, value in project.items():
                 projectname = doc.add_paragraph(key)
-                projectname.runs[0].bold = True
-                projectname.runs[0].font.size = Pt(12)
-                projectname.runs[0].font.name = 'Times New Roman'
+                formatting(projectname.runs[0])
                 if i == 0:
                     projectname.paragraph_format.space_before = Pt(0)
                 else: 
                     projectname.paragraph_format.space_before = Pt(9)
                 for point in value:
                     currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
-                    currentpoint.runs[0].font.name = 'Times New Roman'
-                    currentpoint.runs[0].font.size = Pt(12)
+                    formatting(currentpoint.runs[0], False)
                     currentpoint.paragraph_format.space_after = Pt(3)
                     currentpoint.paragraph_format.space_before = Pt(15)
 
