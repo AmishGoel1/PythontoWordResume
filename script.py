@@ -2,6 +2,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, Inches
 from docx.text.run import Run
+from docx.text.paragraph import Paragraph
 import yaml
 
 with open('points.yaml', 'r') as f:
@@ -20,6 +21,10 @@ def formatting(pararun: Run, bold_or_not=True, font_size=Pt(12), font_name='Time
     pararun.font.name = font_name
     pararun.bold = bold_or_not
     pararun.font.size = font_size
+
+def spacing(paragraph: Paragraph, space_before: Pt, space_after: Pt):
+    paragraph.paragraph_format.space_after = space_after
+    paragraph.paragraph_format.space_before = space_before
 
 nametext = doc.add_paragraph('AMISH GOEL')
 formatting(nametext.runs[0], font_size=Pt(18))
@@ -47,7 +52,6 @@ for section in sections:
                 formatting(currentpoint.runs[0])
                 valuerun = currentpoint.add_run(f"{value}")
                 formatting(valuerun, False)
-                currentpoint.paragraph_format.space_after = Pt(6)
                 currentpoint.paragraph_format.space_after = Pt(3)
         
         doc.add_paragraph()
@@ -74,8 +78,7 @@ for section in sections:
                 for point in value:
                     currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
                     formatting(currentpoint.runs[0], False)
-                    currentpoint.paragraph_format.space_after = Pt(3)
-                    currentpoint.paragraph_format.space_before = Pt(15)
+                    spacing(currentpoint, Pt(15), Pt(3))
 
 section = doc.sections[0]
 
