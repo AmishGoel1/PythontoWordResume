@@ -21,6 +21,7 @@ nametextrun.font.name = 'Times New Roman'
 nametextrun.bold = True
 nametextrun.font.size = Pt(18)
 nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+nametext.paragraph_format.space_after = Pt(0)
 
 linkspara = doc.add_paragraph(f"{email} | LinkedIn | GitHub")
 linkspara.runs[0].font.name = 'Times New Roman'
@@ -46,7 +47,17 @@ for section in sections:
     elif section == 'Core Skills':
         for skill in data['skills']:
            for key, value in skill.items():
-                doc.add_paragraph(f"{key}: {value}")
+                currentpoint = doc.add_paragraph(f"{key}: ")
+                currentpoint.runs[0].bold = True
+                currentpoint.runs[0].font.name = 'Times New Roman'
+                currentpoint.runs[0].font.size = Pt(12)
+                valuerun = currentpoint.add_run(f"{value}")
+                valuerun.font.size = Pt(12)
+                valuerun.font.name = 'Times New Roman'
+                currentpoint.paragraph_format.space_after = Pt(6)
+                currentpoint.paragraph_format.space_after = Pt(3)
+        
+        doc.add_paragraph()
     
     elif section == 'Work Experience':
         for work in data['work']:
