@@ -64,8 +64,11 @@ for section in sections:
             for key, value in work.items():
                 doc.add_paragraph(f"{value[0]['Title']}, {value[1]['Company']} {value[2]['Date']}")
                 for point in value[3]['Points']:
-                    doc.add_paragraph(f"{point}", style='List Bullet')
-
+                    currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
+                    currentworkpoint.runs[0].font.size = Pt(12)
+                    currentworkpoint.runs[0].font.name = 'Times New Roman'
+                    currentworkpoint.paragraph_format.space_after = Pt(3)
+            doc.add_paragraph()
     elif section == 'Projects':
         for project in data['projects']:
            for key, value in project.items():
