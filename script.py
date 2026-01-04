@@ -1,6 +1,7 @@
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, Inches
+from docx.text.run import Run
 import yaml
 
 with open('points.yaml', 'r') as f:
@@ -15,13 +16,13 @@ sections = ('Professional Summary', 'Core Skills', 'Work Experience', 'Education
 
 doc = Document()
 
-def formatting(pararun, bold_or_not=True, font_size=Pt(12), font_name='Times New Roman'):
+def formatting(pararun: Run, bold_or_not=True, font_size=Pt(12), font_name='Times New Roman'):
     pararun.font.name = font_name
     pararun.bold = bold_or_not
     pararun.font.size = font_size
 
 nametext = doc.add_paragraph('AMISH GOEL')
-formatting(pararun=nametext.runs[0], font_size=Pt(18))
+formatting(nametext.runs[0], font_size=Pt(18))
 nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
 nametext.paragraph_format.space_after = Pt(0)
 
