@@ -56,6 +56,20 @@ for section in sections:
         
         doc.add_paragraph()
     
+    elif section == 'Education & Certificates':
+        for university in data['education']:
+            for key, value in university.items():
+                university = doc.add_paragraph(value[0]['Name'])
+                formatting(university.runs[0], True)
+                for credential in value[1]['Credential']:
+                    for key, value in credential.items():
+                        credentialname = doc.add_paragraph(value[0]['Name'])
+                        credentialname.paragraph_format.space_after = Pt(0)
+                        formatting(credentialname.runs[0], True)
+                        for point in value[1]['Points']:
+                            currentpoint = doc.add_paragraph(point, style='List Bullet')
+                            formatting(currentpoint.runs[0], False)
+
     elif section == 'Work Experience':
         for work in data['work']:
             for key, value in work.items():

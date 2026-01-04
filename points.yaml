@@ -3,6 +3,16 @@ skills:
   - Skill 1: "Up, to, 7, skills"
   - Skill 2: "Up, to, 7, skills"
   - Skill 3: "Up, to, 7, skills"
+education: 
+  - University 1: 
+    - Name: "University 1"
+    - Credential:
+      - Credential 1:
+        - Name: "Credential Name"
+        - Points: ['Point 1', 'Point 2']
+      - Credential 2:
+        - Name: "Credential Name"
+        - Points: ['Point 1', 'Point 2']
 work:
   - Experience 1: 
     - Title: 'Title at company 1'
