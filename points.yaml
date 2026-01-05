@@ -1,30 +1,28 @@
 summary: "Summary text"
 skills:
   - Skill 1: "Up, to, 7, skills"
-  - Skill 2: "Up, to, 7, skills"
-  - Skill 3: "Up, to, 7, skills"
+    Skill 2: "Up, to, 7, skills"
+    Skill 3: "Up, to, 7, skills"
 education: 
-  - University 1: 
-    - Name: "University 1"
-    - Credential:
-      - Credential 1:
-        - Name: "Credential Name"
-        - Points: ['Point 1', 'Point 2']
-      - Credential 2:
-        - Name: "Credential Name"
-        - Points: ['Point 1', 'Point 2']
+  - Name: "University 1"
+    Credential:
+      - Name: "Credential Name"
+        Points: ['Point 1', 'Point 2']
+      - Name: "Credential Name"
+        Points: ['Point 1', 'Point 2']
+certificates:
+  - certificate 1: 'Certificate 1 details'
+    certificate 2: 'Certificate 2 details'
 work:
-  - Experience 1: 
-    - Title: 'Title at company 1'
-    - Company: 'Name of Company'
-    - Date: 'Date range of experience'
-    - Points: ['Point1', 'Point2', 'Point3']
-  - Experience 2: 
-    - Title: 'Title at company 1'
-    - Company: 'Name of Company'
-    - Date: 'Date range of experience'
-    - Points: ['Point1', 'Point2', 'Point3']
+  - Title: 'Title at company 1'
+    Company: 'Name of Company'
+    Date: 'Date range of experience'
+    Points: ['Point1', 'Point2', 'Point3']
+  - Title: 'Title at company 2'
+    Company: 'Name of Company'
+    Date: 'Date range of experience'
+    Points: ['Point1', 'Point2', 'Point3']
 projects:
   - Project 1: ['Point 1', 'Point 2', 'Point 3']
-  - Project 2: ['Point 1', 'Point 2', 'Point 3']
-  - Project 3: ['Point 1', 'Point 2', 'Point 3']
+    Project 2: ['Point 1', 'Point 2', 'Point 3']
+    Project 3: ['Point 1', 'Point 2', 'Point 3']

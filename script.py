@@ -38,61 +38,61 @@ linkspara.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
 for section in sections:
     currentsection = doc.add_paragraph(f"{section}\n")
     formatting(currentsection.runs[0], True, Pt(13))
-    currentsection.paragraph_format.space_after = Pt(0)
-    
+    spacing(currentsection, Pt(0), Pt(0))
     if section == 'Professional Summary':
-        summarytext = doc.add_paragraph(f"{data['summary']}")
+        summarytext = doc.add_paragraph(f"{data['summary']}\n")
         formatting(summarytext.runs[0], False)     
-        # summarytext.paragraph_format.line_spacing = 1.05
+        spacing(summarytext, Pt(0), Pt(0))
     
     elif section == 'Core Skills':
-        for skill in data['skills']:
-           for key, value in skill.items():
-                currentpoint = doc.add_paragraph(f"{key}: ")
-                formatting(currentpoint.runs[0])
-                valuerun = currentpoint.add_run(f"{value}")
-                formatting(valuerun, False)
-                currentpoint.paragraph_format.space_after = Pt(3)
-        
+        for key, value in data['skills'][0].items():
+            currentpoint = doc.add_paragraph(f"{key}: ")
+            formatting(currentpoint.runs[0])
+            valuerun = currentpoint.add_run(f"{value}")
+            formatting(valuerun, False)
+            currentpoint.paragraph_format.space_after = Pt(3)
         doc.add_paragraph()
     
     elif section == 'Education & Certificates':
         for university in data['education']:
-            for key, value in university.items():
-                university = doc.add_paragraph(value[0]['Name'])
-                formatting(university.runs[0], True)
-                for credential in value[1]['Credential']:
-                    for key, value in credential.items():
-                        credentialname = doc.add_paragraph(value[0]['Name'])
+                universityname = doc.add_paragraph(university['Name'])
+                formatting(universityname.runs[0], True)
+                for credential in university['Credential']:
+                        credentialname = doc.add_paragraph(credential['Name'])
                         credentialname.paragraph_format.space_after = Pt(0)
                         formatting(credentialname.runs[0], True)
-                        for point in value[1]['Points']:
+                        for point in credential['Points']:
                             currentpoint = doc.add_paragraph(point, style='List Bullet')
                             formatting(currentpoint.runs[0], False)
+                            currentpoint.paragraph_format.space_after = Pt(0)
+        doc.add_paragraph()
+        for certificate in data['certificates']:
+            for key, value in certificate.items():
+                certificatename = doc.add_paragraph(value, style='List Bullet')
+                formatting(certificatename.runs[0], False)
+                certificatename.paragraph_format.space_after = Pt(2)
 
     elif section == 'Work Experience':
         for work in data['work']:
-            for key, value in work.items():
-                doc.add_paragraph(f"{value[0]['Title']}, {value[1]['Company']} {value[2]['Date']}")
-                for point in value[3]['Points']:
-                    currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
-                    formatting(currentworkpoint.runs[0], False)
-                    currentworkpoint.paragraph_format.space_after = Pt(3)
+            doc.add_paragraph(f"{work['Title']}, {work['Company']} {work['Date']}")
+            for point in work['Points']:
+                currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
+                formatting(currentworkpoint.runs[0], False)
+                currentworkpoint.paragraph_format.space_after = Pt(3)
             doc.add_paragraph()
     
     elif section == 'Projects':
-        for i, project in enumerate(data['projects']):
-           for key, value in project.items():
-                projectname = doc.add_paragraph(key)
-                formatting(projectname.runs[0])
-                if i == 0:
-                    projectname.paragraph_format.space_before = Pt(0)
-                else: 
-                    projectname.paragraph_format.space_before = Pt(9)
-                for point in value:
-                    currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
-                    formatting(currentpoint.runs[0], False)
-                    spacing(currentpoint, Pt(15), Pt(3))
+        for key, value in data['projects'][0].items():
+            projectname = doc.add_paragraph(key)
+            formatting(projectname.runs[0])
+            if key == 'Project 1':
+                projectname.paragraph_format.space_before = Pt(0)
+            else: 
+                projectname.paragraph_format.space_before = Pt(9)
+            for point in value:
+                currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
+                formatting(currentpoint.runs[0], False)
+                spacing(currentpoint, Pt(15), Pt(3))
 
 section = doc.sections[0]
 
