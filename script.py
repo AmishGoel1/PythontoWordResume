@@ -1,4 +1,4 @@
-from docx import Document
+from docx import Document as doc
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, Inches
 from docx.text.run import Run
@@ -7,6 +7,9 @@ from pydantic import BaseModel
 from typing import List
 import yaml
 from dataclasses import dataclass
+from enum import Enum
+from abc import ABC, abstractmethod
+from docx.document import Document
 
 with open('points.yaml', 'r') as f:
     data = yaml.safe_load(f)
@@ -45,6 +48,26 @@ class Resume(BaseModel):
     work: List[workclass]
     projects: List[projectclass]
 
+class SectionRenderBaseClass(ABC):
+    """Abstract Class for Rendering a section
+    
+    Keyword arguments:
+    ABC class -- Inheriting from ABC abstract class
+    Return: nothing
+    """
+    @abstractmethod
+    def render(self, doc: Document, data: Resume):
+        pass
+class Sections(Enum):
+    PROFESSIONAL_SUMMARY = 'Professional Summary'
+    SKILLS = 'Skills'
+    EXPERIENCE = 'Experience'
+    EDUCATON = 'Education'
+    PROJECTS = 'Projects'
+
+def spacing(paragraph: Paragraph, space_before: Pt, space_after: Pt):
+    paragraph.paragraph_format.space_after = space_after
+    paragraph.paragraph_format.space_before = space_before
 @dataclass
 class TextStyle:
     bold: bool = False
@@ -64,48 +87,34 @@ formattingstyles = {
     'SectionHeading': TextStyle(bold=True, font_size=Pt(13))
 }
 
-resume = Resume.model_validate(data)
-name = 'AMISH GOEL'
-email = 'Jobs@lets.workwithamish.me'
-linkedinLink = 'https://www.linkedin.com/in/amish-goyal-096066b4/'
-github = 'https://github.com/AmishGoel1'
-
-sections = ('Professional Summary', 'Core Skills', 'Work Experience', 'Education & Certificates', 'Projects')
-
-doc = Document()
-
-def spacing(paragraph: Paragraph, space_before: Pt, space_after: Pt):
-    paragraph.paragraph_format.space_after = space_after
-    paragraph.paragraph_format.space_before = space_before
-
-nametext = doc.add_paragraph('AMISH GOEL')
-formattingstyles['Name'].apply(nametext.runs[0])
-nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-nametext.paragraph_format.space_after = Pt(0)
-
-linkspara = doc.add_paragraph(f"{email} | LinkedIn | GitHub")
-formattingstyles['Links'].apply(linkspara.runs[0])
-linkspara.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-for section in sections:
-    currentsection = doc.add_paragraph(f"{section}\n")
-    formattingstyles['SectionHeading'].apply(currentsection.runs[0])
-    spacing(currentsection, Pt(0), Pt(0))
-    if section == 'Professional Summary':
-        summarytext = doc.add_paragraph(f"{resume.summary}\n")
-        formattingstyles['Point'].apply(summarytext.runs[0])   
-        spacing(summarytext, Pt(0), Pt(0))
-    
-    elif section == 'Core Skills':
-        for skill in resume.skills:
-            currentpoint = doc.add_paragraph(f"{skill.category}: ")
-            formattingstyles['PointHeading'].apply(currentpoint.runs[0])
-            valuerun = currentpoint.add_run(f"{skill.skill}")
+class ProfessionalSummaryRenderer(SectionRenderBaseClass):
+    def render(self, doc: Document, data: Resume):
+        text = doc.add_paragraph(f"{data.summary}\n")
+        formattingstyles['Point'].apply(text.runs[0])   
+        spacing(text, Pt(0), Pt(0))
+        
+class SkillRenderer(SectionRenderBaseClass):
+    def render(self, doc: Document, data: Resume):
+        for skillcategory in data.skills:
+            categoryname = doc.add_paragraph(f"{skillcategory.category}: ")
+            formattingstyles['PointHeading'].apply(categoryname.runs[0])
+            valuerun = categoryname.add_run(f"{skillcategory.skill}")
             formattingstyles['Point'].apply(valuerun)
-            currentpoint.paragraph_format.space_after = Pt(3)
+            categoryname.paragraph_format.space_after = Pt(3)
         doc.add_paragraph()
-    
-    elif section == 'Education & Certificates':
+
+class WorkExperienceRenderer(SectionRenderBaseClass):
+    def render(self, doc: Document, data: Resume):
+        for work in resume.work:
+            doc.add_paragraph(f"{work.Title}, {work.Company} {work.Date}")
+            for point in work.Points:
+                currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
+                formattingstyles['Point'].apply(currentworkpoint.runs[0])
+                currentworkpoint.paragraph_format.space_after = Pt(3)
+        doc.add_paragraph()
+
+class EducationRenderer(SectionRenderBaseClass):
+    def render(self, doc: Document, data: Resume):
         for university in resume.education:
                 universityname = doc.add_paragraph(university.Name)
                 formattingstyles['PointHeading'].apply(universityname.runs[0])
@@ -122,17 +131,9 @@ for section in sections:
             certificatename = doc.add_paragraph(f"{certificate.Name}: {certificate.Issuer}", style='List Bullet')
             formattingstyles['Point'].apply(certificatename.runs[0])
             certificatename.paragraph_format.space_after = Pt(2)
-
-    elif section == 'Work Experience':
-        for work in resume.work:
-            doc.add_paragraph(f"{work.Title}, {work.Company} {work.Date}")
-            for point in work.Points:
-                currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
-                formattingstyles['Point'].apply(currentworkpoint.runs[0])
-                currentworkpoint.paragraph_format.space_after = Pt(3)
-            doc.add_paragraph()
     
-    elif section == 'Projects':
+class ProjectRenderer(SectionRenderBaseClass):
+    def render(self, doc: Document, data: Resume):
         for project in resume.projects:
             projectname = doc.add_paragraph(project.Name)
             formattingstyles['PointHeading'].apply(projectname.runs[0])
@@ -145,11 +146,40 @@ for section in sections:
                 formattingstyles['Point'].apply(currentpoint.runs[0])
                 spacing(currentpoint, Pt(15), Pt(3))
 
-section = doc.sections[0]
+resume = Resume.model_validate(data['resume'][0])
+name = 'AMISH GOEL'
+email = 'Jobs@lets.workwithamish.me'
+linkedinLink = 'https://www.linkedin.com/in/amish-goyal-096066b4/'
+github = 'https://github.com/AmishGoel1'
+initialdoc = doc()
+
+renderermap: dict[str, SectionRenderBaseClass] = {
+    Sections.PROFESSIONAL_SUMMARY.value: ProfessionalSummaryRenderer(),
+    Sections.SKILLS.value: SkillRenderer(),
+    Sections.EDUCATON.value: EducationRenderer(),
+    Sections.EXPERIENCE.value: WorkExperienceRenderer(),
+    Sections.PROJECTS.value: ProjectRenderer()
+}
+
+nametext = initialdoc.add_paragraph('AMISH GOEL')
+formattingstyles['Name'].apply(nametext.runs[0])
+nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+nametext.paragraph_format.space_after = Pt(0)
+
+linkspara = initialdoc.add_paragraph(f"{email} | LinkedIn | GitHub")
+formattingstyles['Links'].apply(linkspara.runs[0])
+linkspara.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+for section in data['resume_sections']:
+    heading = initialdoc.add_paragraph(section['type'])
+    formattingstyles['SectionHeading'].apply(heading.runs[0])
+    renderermap[section['type']].render(initialdoc, resume)
+
+section = initialdoc.sections[0]
 section.left_margin = Inches(0.5)
 section.right_margin = Inches(0.5)
 section.top_margin = Inches(0.437)
 section.bottom_margin = Inches(0.287)
 
-doc.save('sapmle1.docx')
+initialdoc.save('sapmle1.docx')
 
