@@ -11,9 +11,16 @@ from enum import Enum
 from abc import ABC, abstractmethod
 from docx.document import Document
 
-with open('points.yaml', 'r') as f:
-    data = yaml.safe_load(f)
-
+try:
+    with open("points.yaml", "r") as file:
+        data = yaml.safe_load(file)
+    print("Successfully read prompt text file.")
+except FileNotFoundError:
+    print("Prompt text file not found. Please make sure the file exists")
+except PermissionError:
+	print("Permission denied when accessing the file. Please make sure you can access the file")
+except IOError as e:
+    print(f"An I/O error occured {e}")
 class skillsclass(BaseModel):
     category: str
     skill: str
