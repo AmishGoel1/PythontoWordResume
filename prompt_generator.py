@@ -1,4 +1,4 @@
-from anthropic import Anthropic
+from anthropic import Anthropic, APIConnectionError, APIStatusError
 from dataclasses import dataclass
 import os
 from dotenv import load_dotenv
@@ -50,11 +50,17 @@ class LLMResumeGenerator:
     client: Anthropic = Anthropic(api_key=api_key)
    
     def generate_yaml_from_prompt(self, prompt_text: str):
-        message = self.client.messages.create(
-            max_tokens= 3096, 
-            messages=[{'role': 'user', 'content': f"{prompt_text}"}], 
-            model= self.llmmodel
-        )
+        try: 
+            message = self.client.messages.create(
+                max_tokens= 3096, 
+                messages=[{'role': 'user', 'content': f"{prompt_text}"}], 
+                model= self.llmmodel
+            )
+        
+        except APIStatusError as e:
+            print(f"API Error ({e.status_code}): {e.message}")
+        except APIConnectionError:
+            print("Network error. Check your connection.")
 
         yaml_content = message.content[0].text[7:-4]
 
