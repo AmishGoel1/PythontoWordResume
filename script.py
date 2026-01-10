@@ -3,7 +3,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt, Inches
 from docx.text.run import Run
 from docx.text.paragraph import Paragraph
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl, EmailStr
 from typing import List
 import yaml
 from dataclasses import dataclass
@@ -153,13 +153,37 @@ class ProjectRenderer(SectionRenderBaseClass):
                 formattingstyles['Point'].apply(currentpoint.runs[0])
                 spacing(currentpoint, Pt(15), Pt(3))
 
+class ContactInfo(BaseModel):
+    name: str
+    email: EmailStr
+    github: HttpUrl
+    linkedin: HttpUrl
+
+contact = ContactInfo(
+    name = 'AMISH GOEL',
+    email = 'Jobs@lets.workwithamish.me',
+    github = "https://google.com", # type: ignore
+    linkedin = "https://github.com/AmishGoel1" # type: ignore
+)
+
 resume = Resume.model_validate(data['resume'][0])
-name = 'AMISH GOEL'
-email = 'Jobs@lets.workwithamish.me'
-linkedinLink = 'https://www.linkedin.com/in/amish-goyal-096066b4/'
-github = 'https://github.com/AmishGoel1'
+#linkedinLink = 'https://www.linkedin.com/in/amish-goyal-096066b4/'
+#github = 'https://github.com/AmishGoel1'
+
 initialdoc = doc()
 
+main_section_margin = initialdoc.sections[0]
+main_section_margin.left_margin = Inches(0.5)
+main_section_margin.right_margin = Inches(0.5)
+main_section_margin.top_margin = Inches(0.437)
+main_section_margin.bottom_margin = Inches(0.287)
+
+def paragraph_formatting(doc: Document, paragraph_text: str,style: TextStyle, alignment = WD_ALIGN_PARAGRAPH.CENTER):
+    para = doc.add_paragraph(paragraph_text)
+    TextStyle().apply(para.runs[0])
+    para.alignment = alignment
+
+    return para
 renderermap: dict[str, SectionRenderBaseClass] = {
     Sections.PROFESSIONAL_SUMMARY.value: ProfessionalSummaryRenderer(),
     Sections.SKILLS.value: SkillRenderer(),
@@ -168,25 +192,15 @@ renderermap: dict[str, SectionRenderBaseClass] = {
     Sections.PROJECTS.value: ProjectRenderer()
 }
 
-nametext = initialdoc.add_paragraph('AMISH GOEL')
-formattingstyles['Name'].apply(nametext.runs[0])
-nametext.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-nametext.paragraph_format.space_after = Pt(0)
+nametext = paragraph_formatting(initialdoc, contact.name, formattingstyles['Name'])
+nametext.paragraph_format.space_after = 0
 
-linkspara = initialdoc.add_paragraph(f"{email} | LinkedIn | GitHub")
-formattingstyles['Links'].apply(linkspara.runs[0])
-linkspara.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+linkspara = paragraph_formatting(initialdoc, f"{contact.email} | LinkedIn | GitHub", formattingstyles['Links'])
 
 for section in data['resume_sections']:
     heading = initialdoc.add_paragraph(section['type'])
     formattingstyles['SectionHeading'].apply(heading.runs[0])
     renderermap[section['type']].render(initialdoc, resume)
-
-section = initialdoc.sections[0]
-section.left_margin = Inches(0.5)
-section.right_margin = Inches(0.5)
-section.top_margin = Inches(0.437)
-section.bottom_margin = Inches(0.287)
 
 initialdoc.save('sapmle1.docx')
 
