@@ -42,7 +42,6 @@ except IOError as e:
 
 api_key = get_env_variable(key='API_KEY')
 ai_model = 'claude-sonnet-4-5-20250929'
-
 @dataclass
 class LLMResumeGenerator: 
     """Generate tailored resume using Claude AI"""
@@ -56,20 +55,19 @@ class LLMResumeGenerator:
                 messages=[{'role': 'user', 'content': f"{prompt_text}"}], 
                 model= self.llmmodel
             )
-        
         except APIStatusError as e:
             print(f"API Error ({e.status_code}): {e.message}")
         except APIConnectionError:
             print("Network error. Check your connection.")
 
-        yaml_content = message.content[0].text[7:-4]
-
-        try:
-            generated_resume_yaml = yaml.safe_load(yaml_content)
-            return generated_resume_yaml
+        try: 
+            yaml_content = message.content[0].text[7:-4] # pyright: ignore[reportAttributeAccessIssue, reportPossiblyUnboundVariable]
+            print(yaml.dump(yaml_content))
+            return yaml.safe_load(yaml_content) 
         except yaml.YAMLError as e:
             raise ValueError(print(e))
-        
+        except:
+            print("Make sure text key exists")
 
     def save_yaml_to_file(self, file, yaml_text):
         with open(file, 'w') as f:
