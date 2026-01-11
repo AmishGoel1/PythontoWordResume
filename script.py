@@ -10,17 +10,29 @@ from dataclasses import dataclass
 from enum import Enum
 from abc import ABC, abstractmethod
 from docx.document import Document
+from prompt_generator import LLMResumeGenerator
+import argparse
+
+ai_model = 'claude-sonnet-4-5-20250929'
+
+parser = argparse.ArgumentParser(
+    description="Generate tailored resumes using AI"
+)
+parser.add_argument("-p", '--prompt', type=str,default='prompt.txt', help="File path that contains the prompt as a txt file")
+parser.add_argument("-o", "--output", type=str, default='resume.docx', help="Filename for the newly generated docx file")
+args = parser.parse_args()
+
 
 try:
-    with open("points.yaml", "r") as file:
-        data = yaml.safe_load(file)
+    with open(args.prompt, "r") as file:
+        config_data = file.read()
     print("Successfully read prompt text file.")
 except FileNotFoundError:
     print("Prompt text file not found. Please make sure the file exists")
 except PermissionError:
 	print("Permission denied when accessing the file. Please make sure you can access the file")
 except IOError as e:
-    print(f"An I/O error occured {e}")
+	print(f"An I/O error occurred: {e}")
 class skillsclass(BaseModel):
     category: str
     skill: str
@@ -138,7 +150,6 @@ class EducationRenderer(SectionRenderBaseClass):
             certificatename = doc.add_paragraph(f"{certificate.Name}: {certificate.Issuer}", style='List Bullet')
             formattingstyles['Point'].apply(certificatename.runs[0])
             certificatename.paragraph_format.space_after = Pt(2)
-    
 class ProjectRenderer(SectionRenderBaseClass):
     def render(self, doc: Document, data: Resume):
         for project in resume.projects:
@@ -152,7 +163,6 @@ class ProjectRenderer(SectionRenderBaseClass):
                 currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
                 formattingstyles['Point'].apply(currentpoint.runs[0])
                 spacing(currentpoint, Pt(15), Pt(3))
-
 class ContactInfo(BaseModel):
     name: str
     email: EmailStr
@@ -166,9 +176,22 @@ contact = ContactInfo(
     linkedin = "https://github.com/AmishGoel1" # type: ignore
 )
 
-resume = Resume.model_validate(data['resume'][0])
-#linkedinLink = 'https://www.linkedin.com/in/amish-goyal-096066b4/'
-#github = 'https://github.com/AmishGoel1'
+resume_generator = LLMResumeGenerator(ai_model)
+yaml_content = resume_generator.generate_yaml_from_prompt(prompt_text=config_data) # pyright: ignore[reportPossiblyUnboundVariable]
+resume_generator.save_yaml_to_file('points.yaml', yaml_content)
+
+try:
+    with open('points.yaml', "r") as file:
+        data = yaml.safe_load(file)
+    print("Successfully read yaml file.")
+except FileNotFoundError:
+    print("Points yaml file not found. Please make sure the file exists")
+except PermissionError:
+	print("Permission denied when accessing the file. Please make sure you can access the file")
+except IOError as e:
+    print(f"An I/O error occured {e}")
+
+resume = Resume.model_validate(data['resume'][0]) # pyright: ignore[reportPossiblyUnboundVariable]
 
 initialdoc = doc()
 
@@ -197,10 +220,11 @@ nametext.paragraph_format.space_after = 0
 
 linkspara = paragraph_formatting(initialdoc, f"{contact.email} | LinkedIn | GitHub", formattingstyles['Links'])
 
-for section in data['resume_sections']:
+for section in data['resume_sections']: # pyright: ignore[reportPossiblyUnboundVariable]
     heading = initialdoc.add_paragraph(section['type'])
     formattingstyles['SectionHeading'].apply(heading.runs[0])
-    renderermap[section['type']].render(initialdoc, resume)
+    renderermap[section['type']].render(initialdoc, resume) # pyright: ignore[reportPossiblyUnboundVariable]
 
-initialdoc.save('sapmle1.docx')
+initialdoc.save(args.output)
+
 

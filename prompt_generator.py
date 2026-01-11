@@ -1,14 +1,10 @@
 from anthropic import Anthropic, APIConnectionError, APIStatusError
 from dataclasses import dataclass
-import os
-from dotenv import load_dotenv
 import yaml
-from dotenv import load_dotenv, find_dotenv
-load_dotenv()
-
 import os
 from dotenv import load_dotenv, find_dotenv
 
+load_dotenv()
 def get_env_variable(key, default=None):
     """
     Checks if .env file exists and if the key is present.
@@ -29,19 +25,8 @@ def get_env_variable(key, default=None):
     print(f"Warning: Key '{key}' not found in the environment.")
     return default
 
-try:
-    with open("prompt.txt", "r") as file:
-        config_data = file.read()
-    print("Successfully read prompt text file.")
-except FileNotFoundError:
-    print("Prompt text file not found. Please make sure the file exists")
-except PermissionError:
-	print("Permission denied when accessing the file. Please make sure you can access the file")
-except IOError as e:
-	print(f"An I/O error occurred: {e}")
-
 api_key = get_env_variable(key='API_KEY')
-ai_model = 'claude-sonnet-4-5-20250929'
+
 @dataclass
 class LLMResumeGenerator: 
     """Generate tailored resume using Claude AI"""
@@ -71,6 +56,4 @@ class LLMResumeGenerator:
 
     def save_yaml_to_file(self, file, yaml_text):
         with open(file, 'w') as f:
-            output_file = yaml.dump(yaml_text, f, sort_keys=False)
-
-        return output_file
+            yaml.dump(yaml_text, f, sort_keys=False)
