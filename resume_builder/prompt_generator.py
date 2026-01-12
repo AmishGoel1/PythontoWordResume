@@ -4,7 +4,7 @@ import yaml
 import os
 from dotenv import load_dotenv, find_dotenv
 
-load_dotenv()
+load_dotenv('../.env')
 def get_env_variable(key, default=None):
     """
     Checks if .env file exists and if the key is present.
