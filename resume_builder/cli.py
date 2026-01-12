@@ -1,6 +1,17 @@
 import argparse
-from yaml_docx import *
-from prompt_generator import *
+
+import prompt_generator
+import yaml
+from docx import Document as doc
+from docx.shared import Inches
+from yaml_docx import (
+    Resume,
+    contact,
+    formattingstyles,
+    paragraph_formatting,
+    renderermap,
+)
+
 
 def main():
     ai_model = 'claude-sonnet-4-5-20250929'
@@ -23,7 +34,7 @@ def main():
     except IOError as e:
         print(f"An I/O error occurred: {e}")
 
-    resume_generator = LLMResumeGenerator(ai_model)
+    resume_generator = prompt_generator.LLMResumeGenerator(ai_model)
     yaml_content = resume_generator.generate_yaml_from_prompt(prompt_text=config_data) # pyright: ignore[reportPossiblyUnboundVariable]
     resume_generator.save_yaml_to_file('points.yaml', yaml_content)
 
@@ -51,7 +62,7 @@ def main():
     nametext = paragraph_formatting(initialdoc, contact.name, formattingstyles['Name'])
     nametext.paragraph_format.space_after = 0
 
-    linkspara = paragraph_formatting(initialdoc, f"{contact.email} | LinkedIn | GitHub", formattingstyles['Links'])
+    paragraph_formatting(initialdoc, f"{contact.email} | LinkedIn | GitHub", formattingstyles['Links'])
 
     for section in data['resume_sections']: # pyright: ignore[reportPossiblyUnboundVariable]
         heading = initialdoc.add_paragraph(section['type'])

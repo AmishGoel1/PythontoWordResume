@@ -1,16 +1,15 @@
-from docx import Document as doc
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Pt, Inches
-from docx.text.run import Run
-from docx.text.paragraph import Paragraph
-from pydantic import BaseModel, HttpUrl, EmailStr
-from typing import List
-import yaml
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-from abc import ABC, abstractmethod
+from typing import List
+
 from docx.document import Document
-from prompt_generator import LLMResumeGenerator
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Pt
+from docx.text.paragraph import Paragraph
+from docx.text.run import Run
+from pydantic import BaseModel, EmailStr, HttpUrl
+
 
 class skillsclass(BaseModel):
     category: str

@@ -1,8 +1,9 @@
-from anthropic import Anthropic, APIConnectionError, APIStatusError
-from dataclasses import dataclass
-import yaml
 import os
-from dotenv import load_dotenv, find_dotenv
+from dataclasses import dataclass
+
+import yaml
+from anthropic import Anthropic, APIConnectionError, APIStatusError
+from dotenv import find_dotenv, load_dotenv
 
 load_dotenv('../.env')
 def get_env_variable(key, default=None):
@@ -51,8 +52,6 @@ class LLMResumeGenerator:
             return yaml.safe_load(yaml_content) 
         except yaml.YAMLError as e:
             raise ValueError(print(e))
-        except:
-            print("Make sure text key exists")
 
     def save_yaml_to_file(self, file, yaml_text):
         with open(file, 'w') as f:
