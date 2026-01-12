@@ -103,7 +103,7 @@ class SkillRenderer(SectionRenderBaseClass):
 
 class WorkExperienceRenderer(SectionRenderBaseClass):
     def render(self, doc: Document, data: Resume):
-        for work in resume.work:
+        for work in data.work:
             doc.add_paragraph(f"{work.Title}, {work.Company} {work.Date}")
             for point in work.Points:
                 currentworkpoint = doc.add_paragraph(f"{point}", style='List Bullet')
@@ -113,7 +113,7 @@ class WorkExperienceRenderer(SectionRenderBaseClass):
 
 class EducationRenderer(SectionRenderBaseClass):
     def render(self, doc: Document, data: Resume):
-        for university in resume.education:
+        for university in data.education:
                 universityname = doc.add_paragraph(university.Name)
                 formattingstyles['PointHeading'].apply(universityname.runs[0])
                 for credential in university.Credential:
@@ -125,13 +125,13 @@ class EducationRenderer(SectionRenderBaseClass):
                             formattingstyles['Point'].apply(currentpoint.runs[0])
                             currentpoint.paragraph_format.space_after = Pt(0)
         doc.add_paragraph()
-        for certificate in resume.certificates:
+        for certificate in data.certificates:
             certificatename = doc.add_paragraph(f"{certificate.Name}: {certificate.Issuer}", style='List Bullet')
             formattingstyles['Point'].apply(certificatename.runs[0])
             certificatename.paragraph_format.space_after = Pt(2)
 class ProjectRenderer(SectionRenderBaseClass):
     def render(self, doc: Document, data: Resume):
-        for project in resume.projects:
+        for project in data.projects:
             projectname = doc.add_paragraph(project.Name)
             formattingstyles['PointHeading'].apply(projectname.runs[0])
             if project.Name == 'Project 1 Name':
