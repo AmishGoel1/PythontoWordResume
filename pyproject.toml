@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling"]  # or "setuptools", "poetry-core", "flit_core"
+build-backend = "hatchling.build"
+
+[project]
+name = "resume-generator-from-AI-yaml"
+version = "0.1.0"
+description = "A programmatic resume builder using YAML and doc"
+readme = "README.md"
+requires-python = ">=3.10, <4.0"
+license = {text = "GNU"}
+authors = [
+    {name = "Amish Goel", email = "amishgoel1@gmail.com"}
+]
+keywords = ["resume", "docx", "yaml", "AI Resume generator"]
+dependencies = [
+    "requests (==2.32.5)",
+    "annotated-types (==0.7.0)",
+    "anthropic (==0.75.0)",
+    "anyio (==4.12.1)",
+    "backports-tarfile (==1.2.0)",
+    "build (==1.4.0)",
+    "cachecontrol (==0.14.3)",
+    "certifi (==2026.1.4)",
+    "cffi (==2.0.0)",
+    "charset-normalizer (==3.4.4)",
+    "cleo (==2.1.0)",
+    "crashtest (==0.4.1)",
+    "distlib (==0.4.0)",
+    "distro (==1.9.0)",
+    "dnspython (==2.7.0)",
+    "docstring-parser (==0.17.0)",
+    "dulwich (==0.24.10)",
+    "email-validator (==2.3.0)",
+    "exceptiongroup (==1.3.1)",
+    "fastjsonschema (==2.21.2)",
+    "filelock (>=3.20.1)",
+    "findpython (==0.7.1)",
+    "h11 (==0.16.0)",
+    "httpcore (==1.0.9)",
+    "httpx (==0.28.1)",
+    "idna (==3.11)",
+    "importlib-metadata (==8.7.1)",
+    "installer (==0.7.0)",
+    "jaraco-classes (==3.4.0)",
+    "jaraco-context (==6.0.2)",
+    "jaraco-functools (==4.4.0)",
+    "jiter (==0.12.0)",
+    "keyring (==25.7.0)",
+    "lxml (==6.0.2)",
+    "more-itertools (==10.8.0)",
+    "msgpack (==1.1.2)",
+    "packaging (==25.0)",
+    "pbs-installer (==2025.12.17)",
+    "pillow (==11.3.0)",
+    "pkginfo (==1.12.1.2)",
+    "platformdirs (==4.4.0)",
+    "poetry (==2.2.1)",
+    "poetry-core (==2.2.1)",
+    "pycparser (==2.23)",
+    "pydantic (==2.12.5)",
+    "pydantic-core (==2.41.5)",
+    "pyproject-hooks (==1.2.0)",
+    "python-docx (==1.2.0)",
+    "python-dotenv (==1.2.1)",
+    "pyyaml (==6.0.3)",
+    "rapidfuzz (==3.13.0)",
+    "requests-toolbelt (==1.0.0)",
+    "shellingham (==1.5.4)",
+    "sniffio (==1.3.1)",
+    "tomli (==2.4.0)",
+    "tomlkit (==0.13.3)",
+    "trove-classifiers (==2025.12.1.14)",
+    "typing-inspection (==0.4.2)",
+    "typing-extensions (==4.15.0)",
+    "urllib3 (==2.6.3)",
+    "virtualenv (==20.36.1)",
+    "xattr (==1.3.0)",
+    "zipp (==3.23.0)",
+    "zstandard (==0.25.0)",
+]
+
+[project.urls]
+Homepage = "https://github.com/AmishGoel1/PythontoWordResume"
+Issues = "https://github.com/AmishGoel1/PythontoWordResume/issues"
+
+[tool.ruff]
+# Set the maximum line length (standard is often 88 or 100)
+line-length = 88
+# Target a specific Python version
+target-version = "py311"
+
+[tool.ruff.lint]
+# Enable specific rule categories (E=Error, F=Pyflakes, I=isort)
+select = ["E", "F", "I"]
+# Ignore specific rules if needed
+ignore = ["E501"] 
+
+[tool.ruff.format]
+# Customize formatting (e.g., use single quotes instead of double)
+quote-style = "double"
+indent-style = "space"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.11,<0.15.0)"
+]
+
+[project.scripts]
+my-command = "resume_builder.__main__:main"  # Format: command_name = "package.module:function"
