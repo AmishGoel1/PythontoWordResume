@@ -2,8 +2,9 @@
 requires = ["hatchling"]  # or "setuptools", "poetry-core", "flit_core"
 build-backend = "hatchling.build"
 
+
 [project]
-name = "resume-generator-from-AI-yaml"
+name = "resume-builder"
 version = "0.1.0"
 description = "A programmatic resume builder using YAML and doc"
 readme = "README.md"
@@ -107,4 +108,4 @@ dev = [
 ]
 
 [project.scripts]
-my-command = "resume_builder.__main__:main"  # Format: command_name = "package.module:function"
+my-command = "resume_builder.gcli:main"  # Format: command_name = "package.module:function"

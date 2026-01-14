@@ -1,10 +1,10 @@
 import argparse
 
-import prompt_generator
+from .prompt_generator import LLMResumeGenerator
 import yaml
 from docx import Document as doc
 from docx.shared import Inches
-from yaml_docx import (
+from .yaml_docx import (
     Resume,
     contact,
     formattingstyles,
@@ -34,7 +34,7 @@ def main():
     except IOError as e:
         print(f"An I/O error occurred: {e}")
 
-    resume_generator = prompt_generator.LLMResumeGenerator(ai_model)
+    resume_generator = LLMResumeGenerator(ai_model)
     yaml_content = resume_generator.generate_yaml_from_prompt(prompt_text=config_data) # pyright: ignore[reportPossiblyUnboundVariable]
     resume_generator.save_yaml_to_file('points.yaml', yaml_content)
 
