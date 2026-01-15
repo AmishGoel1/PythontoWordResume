@@ -1,0 +1,170 @@
+RESUME_GENERATION_PROMPT = """
+You are an expert resume writer. Your task is to generate a structured YAML resume 
+that is tailored to a specific job description.
+
+Input:
+1. User's current resume (text format)
+2. Job description (text format)
+
+Your job:
+1. Parse the user's resume and extract relevant information
+2. Tailor the resume to match the job description (emphasize relevant skills, experience)
+3. Output ONLY valid YAML that matches the schema below and do not change resume_sections: at all, do not add any keys
+
+YAML Schema:
+resume:  
+  - summary: "Summary text"
+    skills:
+      - category: "Category 1 Name"
+        skill: "Up, to, 7, skills"
+      - category: "Category 2 Name"
+        skill: "Up, to , 7, skills"
+    education: 
+      - Name: "University 1"
+        Credential:
+          - Name: "Credential Name"
+            Points: ["Point 1", "Point 2"]
+          - Name: "Credential Name"
+            Points: ["Point 1", "Point 2"]
+    certificates:
+      - Name: 'Name of certificate 1'
+        Issuer: 'Issuer Org 1' 
+      - Name: 'Name of certificate 2' 
+        Issuer: 'Issuer Org 2' 
+    work:
+      - Title: 'Title at company 1'
+        Company: 'Name of Company'
+        Date: 'Date range of experience'
+        Points: ['Point1', 'Point2', 'Point3']
+      - Title: 'Title at company 2'
+        Company: 'Name of Company'
+        Date: 'Date range of experience'
+        Points: ['Point1', 'Point2', 'Point3']
+    projects:
+      - Name: "Project 1 Name"
+        Points: ['Point 1', 'Point 2', 'Point 3']
+      - Name: "Project 2 Name"
+        Points: ['Point 1', 'Point 2', 'Point 3']
+      - Name: "Project 3 Name"
+        Points: ['Point 1', 'Point 2', 'Point 3']
+
+resume_sections:
+  - type: Professional Summary
+  - type: Skills
+  - type: Experience
+  - type: Education
+  - type: Projects
+
+
+Important instructions:
+1. Keep professional_summary under 150 words
+2. Each achievement in "points" should start with an action verb (Built, Designed, Led, etc.)
+3. Quantify achievements where possible (increased by 40%, reduced costs by $X)
+4. Match the job description's key requirements and keywords
+5. Output ONLY the YAML, no explanations before or after
+
+---
+
+Current Resume (Text):
+Professional Summary
+
+Dedicated Operations Coordinator with a background in General Administration and Team Support. Experienced in organizing workflows using standard office tools, with a focus on process improvement and documentation. Passionate about building efficient, scalable business solutions.
+
+Core Skills
+
+Administration & Organization: Digital Filing Systems, Resource Allocation, Scheduling, Records Management, Office Logistics, Compliance
+Communication & Reporting: Written Correspondence, Data Entry, Presentation Design, Meeting Facilitation, Interdepartmental Coordination
+Software Proficiency: Microsoft Office Suite (Word, Excel, PowerPoint, Outlook), Cloud Storage Solutions, Project Management Tools
+General Competencies: Time Management, Problem Solving, Customer Service, Adaptability, Detail-Oriented
+Languages: English (Fluent), Spanish (Conversational)
+
+Work Experience
+
+Operations Coordinator, General Business Solutions Inc. | February 2023 - Present
+
+Designed and implemented a communication workflow to send real-time updates to team members, reducing response times for urgent inquiries.
+
+Developed a standardized tracking log to manage client accounts, cutting manual processing time and ensuring data consistency across the department.
+
+Administered internal user directories and access logs, managing identity verification, permission assignments, and general account configurations.
+
+Authored and maintained over 15 internal Standard Operating Procedure (SOP) documents, standardizing processes for a team of associates.
+
+Found and remedied a gap in the client onboarding verification process by enforcing stricter validation checks, protecting the organization from data errors.
+
+Team Supervisor, Regional Retail Group | December 2021 - December 2022
+
+Deployed and supported a new inventory tracking method across multiple locations, coordinating with suppliers for estimates and implementation.
+
+Configured and set up workspaces for new branch locations, ensuring seamless operational deployment.
+
+Customer Service Representative, Local Service Provider | December 2020 - November 2021
+
+Delivered front-line support and performed routine account maintenance, including service upgrades, contract renewals, and data entry.
+
+Resolved complex customer inquiries and service issues, maintaining high customer satisfaction levels.
+
+Education & Certificates
+
+State University
+Bachelor of General Studies | September 2023 – April 2025
+
+Dean’s List Award – Fall 2024
+
+Salient skills learned: Project Management, Business Communication, Logistics, Organizational Behavior, Research Methods
+Diploma in General Arts & Science | January 2020 – April 2021
+
+Dean’s List Award- Summer and Fall 2020, Winter 2021
+
+Certified Administrative Professional
+
+Project Management Fundamentals
+
+Certificate in Business Writing
+
+Conflict Resolution & Mediation Training
+
+Workplace Safety & Standards Certification
+
+Projects
+
+Resource Tracking & Organization Initiative
+
+Architected a centralized tracking system by developing a master spreadsheet to record resource status from various departments, storing results in a shared drive.
+
+Built a responsive visual report to provide a weekly summary of resource availability.
+
+Standardized the filing structure to ensure consistent, portable record-keeping across teams.
+
+Established a recurring review process triggered by a calendar schedule to ensure data freshness.
+
+Tools: Spreadsheets, Shared Drives, Calendar Management, Reporting Tools
+
+Digital Documentation Archive Project
+
+Deployed a static informational hub on a shared network drive with a custom index and standardized naming conventions.
+
+Engineered a submission form process using digital surveys to collect and store visitor feedback in a central log.
+
+Implemented a complete review pipeline to automate quality checks and final filing upon submission of new documents.
+
+Tools: Network Storage, Survey Tools, Document Editors, Presentation Software
+
+Automated Correspondence Strategy
+
+Designed a workflow to monitor a high-volume general inbox, parse message content, and post summaries to a group chat for improved visibility.
+
+Implemented keyword-based sorting to automatically move messages to specific folders, enabling faster triage and assignment of requests.
+
+Tools: Email Client, Team Chat Application, Calendar, Word Processor
+
+
+---
+
+Job Description:
+{job_description}
+
+---
+
+Generate the tailored YAML resume:
+
