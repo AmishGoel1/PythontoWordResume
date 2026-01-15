@@ -1,10 +1,11 @@
-import argparse
-
-from .prompt_generator import LLMResumeGenerator
+from prompt_generator import LLMResumeGenerator
 import yaml
 from docx import Document as doc
 from docx.shared import Inches
-from .yaml_docx import (
+from pathlib import Path
+import typer
+from typing import Annotated
+from yaml_docx import (
     Resume,
     contact,
     formattingstyles,
@@ -12,19 +13,26 @@ from .yaml_docx import (
     renderermap,
 )
 
+app = typer.Typer()
 
-def main():
+@app.command()
+def main(
+    prompt_file: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=True, 
+            readable=True,
+            help='Path to the prompt text file [Required]'
+        )
+    ],
+
+    output_file: Annotated[str, typer.Argument()] = 'resume.docx'
+):
     ai_model = 'claude-sonnet-4-5-20250929'
 
-    parser = argparse.ArgumentParser(
-        description="Generate tailored resumes using AI"
-    )
-    parser.add_argument("-p", '--prompt', type=str,default='prompt.txt', help="File path that contains the prompt as a txt file")
-    parser.add_argument("-o", "--output", type=str, default='resume.docx', help="Filename for the newly generated docx file")
-    args = parser.parse_args()
-
     try:
-        with open(args.prompt, "r") as file:
+        with open(prompt_file, "r") as file:
             config_data = file.read()
         print("Successfully read prompt text file.")
     except FileNotFoundError:
@@ -69,7 +77,7 @@ def main():
         formattingstyles['SectionHeading'].apply(heading.runs[0])
         renderermap[section['type']].render(initialdoc, resume) # pyright: ignore[reportPossiblyUnboundVariable]
 
-    initialdoc.save(args.output)
+    initialdoc.save(output_file)
 
 if __name__ == "__main__":
-    main()
+    app()
