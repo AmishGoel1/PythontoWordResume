@@ -1,11 +1,11 @@
-from prompt_generator import LLMResumeGenerator
+from .prompt_generator import LLMResumeGenerator
 import yaml
 from docx import Document as doc
 from docx.shared import Inches
 from pathlib import Path
 import typer
 from typing import Annotated
-from yaml_docx import (
+from .yaml_docx import (
     Resume,
     contact,
     formattingstyles,
