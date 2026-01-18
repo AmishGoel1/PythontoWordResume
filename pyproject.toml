@@ -115,4 +115,4 @@ dev = [
 ]
 
 [project.scripts]
-my-command = "resume_builder.cli:main"  # Format: command_name = "package.module:function"
+my-command = "resume_builder.cli:app"  # Format: command_name = "package.module:function"
