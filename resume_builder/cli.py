@@ -1,3 +1,19 @@
+"""
+Command Line Interface for Resume Builder.
+
+This module provides a command-line interface using Typer for generating
+tailored resumes from text prompts. It orchestrates the complete workflow:
+1. Reading the prompt text file
+2. Generating YAML resume content via Claude AI
+3. Parsing the YAML data
+4. Creating a formatted Word document
+
+The CLI requires a prompt file, Claude API key, and AI model specification
+as arguments, with an optional output filename.
+
+Usage:
+    build-resume <prompt_file> <claude_api_key> <ai_model> --output-file resume.docx
+"""
 from .prompt_generator import LLMResumeGenerator
 import yaml
 from docx import Document as doc
@@ -39,6 +55,34 @@ def main(
     )],
     output_file: Annotated[str, typer.Option(help='Resume name of newly generated resume file')] = 'resume.docx' 
 ):
+    """
+    Generate a tailored resume from a text prompt using Claude AI.
+    
+    This command orchestrates the complete resume generation workflow:
+    1. Reads the input prompt file containing resume info and job description
+    2. Sends the prompt to Claude AI to generate structured YAML content
+    3. Saves the YAML to 'points.yaml' file
+    4. Parses the YAML data into resume models
+    5. Creates a formatted Word document with professional styling
+    
+    Args:
+        prompt_file: Path to a text file containing resume information and target job description.
+                    The prompt guides Claude AI in tailoring the resume content.
+        claude_api_key: API key for authenticating with Anthropic's Claude API.
+                       Can also be set via claude_api_key environment variable.
+        ai_model: Name of the Claude AI model to use (e.g., 'claude-sonnet-4-20250514').
+                 Must be at least 13 characters. See Claude documentation for available models.
+        output_file: Name of the output Word document file (default: 'resume.docx').
+    
+    Raises:
+        FileNotFoundError: If the prompt file doesn't exist.
+        PermissionError: If there are permission issues accessing files.
+        IOError: If any I/O operation fails during file reading/writing.
+    
+    Note:
+        The function uses placeholder URLs for GitHub and LinkedIn in the contact info.
+        These should be customized based on actual data in future versions.
+    """
     
 
     try:
