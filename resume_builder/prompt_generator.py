@@ -44,17 +44,15 @@ class LLMResumeGenerator:
                 messages=[{'role': 'user', 'content': f"{prompt_text}"}], 
                 model= self.llmmodel
             )
+            yaml_content = message.content[0].text[7:-4] # pyright: ignore[reportAttributeAccessIssue, reportPossiblyUnboundVariable]
+            print(yaml.dump(yaml_content))
+            return yaml.safe_load(yaml_content) 
         except APIStatusError as e:
             print(f"API Error ({e.status_code}): {e.message}")
         except APIConnectionError:
             print("Network error. Check your connection.")
-
-        try: 
-            yaml_content = message.content[0].text[7:-4] # pyright: ignore[reportAttributeAccessIssue, reportPossiblyUnboundVariable]
-            print(yaml.dump(yaml_content))
-            return yaml.safe_load(yaml_content) 
         except yaml.YAMLError as e:
-            raise ValueError(print(e))
+            raise ValueError(e)
 
     def save_yaml_to_file(self, file, yaml_text):
         with open(file, 'w') as f:
