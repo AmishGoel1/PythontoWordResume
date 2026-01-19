@@ -147,12 +147,12 @@ class ContactInfo(BaseModel):
     github: HttpUrl
     linkedin: HttpUrl
 
-contact = ContactInfo(
-    name = 'AMISH GOEL',
-    email = 'Jobs@lets.workwithamish.me',
-    github = "https://google.com", # type: ignore
-    linkedin = "https://github.com/AmishGoel1" # type: ignore
-)
+# contact = ContactInfo(
+#     name = 'AMISH GOEL',
+#     email = 'Jobs@lets.workwithamish.me',
+#     github = "https://google.com", # type: ignore
+#     linkedin = "https://github.com/AmishGoel1" # type: ignore
+# )
 
 def paragraph_formatting(doc: Document, paragraph_text: str,style: TextStyle, alignment = WD_ALIGN_PARAGRAPH.CENTER):
     para = doc.add_paragraph(paragraph_text)

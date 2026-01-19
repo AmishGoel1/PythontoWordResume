@@ -7,7 +7,8 @@ import typer
 from typing import Annotated
 from .yaml_docx import (
     Resume,
-    contact,
+    ContactInfo,
+    # contact,
     formattingstyles,
     paragraph_formatting,
     renderermap,
@@ -69,6 +70,13 @@ def main(
     resume = Resume.model_validate(data['resume'][0]) # pyright: ignore[reportPossiblyUnboundVariable]
 
     initialdoc = doc()
+
+    contact = ContactInfo(
+        name = data['personal_details']['name'], # pyright: ignore[reportPossiblyUnboundVariable]
+        email= data['personal_details']['email'], # pyright: ignore[reportPossiblyUnboundVariable]
+        github = "https://google.com", # pyright: ignore[reportArgumentType]
+        linkedin = "https://google.com" # pyright: ignore[reportArgumentType]
+    )
 
     main_section_margin = initialdoc.sections[0]
     main_section_margin.left_margin = Inches(0.5)

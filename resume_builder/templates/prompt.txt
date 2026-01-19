@@ -9,7 +9,7 @@ Input:
 Your job:
 1. Parse the user's resume and extract relevant information
 2. Tailor the resume to match the job description (emphasize relevant skills, experience)
-3. Output ONLY valid YAML that matches the schema below and do not change resume_sections: at all, do not add any keys
+3. Output ONLY valid YAML that matches the schema below and do not change resume_sections: and personal_details: at all, do not add any keys
 
 YAML Schema:
 resume:  
@@ -55,6 +55,9 @@ resume_sections:
   - type: Education
   - type: Projects
 
+personal_details:
+  - name: Your Name
+  - email: your@email.com
 
 Important instructions:
 1. Keep professional_summary under 150 words
