@@ -14,16 +14,18 @@ as arguments, with an optional output filename.
 Usage:
     build-resume <prompt_file> <claude_api_key> <ai_model> --output-file resume.docx
 """
-from .prompt_generator import LLMResumeGenerator
+from pathlib import Path
+from typing import Annotated
+
+import typer
 import yaml
 from docx import Document as doc
 from docx.shared import Inches
-from pathlib import Path
-import typer
-from typing import Annotated
+
+from .prompt_generator import LLMResumeGenerator
 from .yaml_docx import (
-    Resume,
     ContactInfo,
+    Resume,
     # contact,
     formattingstyles,
     paragraph_formatting,
