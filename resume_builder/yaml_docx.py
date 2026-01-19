@@ -404,7 +404,7 @@ def paragraph_formatting(doc: Document, paragraph_text: str,style: TextStyle, al
         Paragraph: The created and formatted paragraph object.
     """
     para = doc.add_paragraph(paragraph_text)
-    TextStyle().apply(para.runs[0])
+    style.apply(para.runs[0])
     para.alignment = alignment
 
     return para
