@@ -43,4 +43,4 @@ resume_sections:
 
 personal_details:
   - name: Your Name
-  - email: your@email.com
+    email: your@email.com

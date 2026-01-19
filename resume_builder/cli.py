@@ -72,8 +72,8 @@ def main(
     initialdoc = doc()
 
     contact = ContactInfo(
-        name = data['personal_details']['name'], # pyright: ignore[reportPossiblyUnboundVariable]
-        email= data['personal_details']['email'], # pyright: ignore[reportPossiblyUnboundVariable]
+        name = data['personal_details'][0]['name'], # pyright: ignore[reportPossiblyUnboundVariable]
+        email= data['personal_details'][0]['email'], # pyright: ignore[reportPossiblyUnboundVariable]
         github = "https://google.com", # pyright: ignore[reportArgumentType]
         linkedin = "https://google.com" # pyright: ignore[reportArgumentType]
     )
