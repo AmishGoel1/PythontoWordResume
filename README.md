@@ -24,17 +24,20 @@ An AI-powered resume builder that uses Claude AI to generate tailored resumes fr
 ## Installation
 
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/AmishGoel1/PythontoWordResume.git
-   cd PythontoWordResume
+      git clone https://github.com/AmishGoel1/PythontoWordResume.git
+      cd PythontoWordResume
    ```
 
 2. Set up the virtual environment and install dependencies:
+
    ```bash
    source activate.sh
    ```
 
    Or manually:
+
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
@@ -48,32 +51,34 @@ An AI-powered resume builder that uses Claude AI to generate tailored resumes fr
 Run the resume builder with your prompt file and Claude API credentials:
 
 ```bash
-my-command <prompt_file> <claude_api_key> <ai_model> --output-file resume.docx
+
+build-resume <prompt_file> <claude_api_key> <ai_model> --output-file resume.docx
+
 ```
 
 ### Arguments
 
-| Argument | Description |
-|----------|-------------|
-| `prompt_file` | Path to the prompt text file containing your resume information and job description |
-| `claude_api_key` | Your Claude API key (can also be set via `claude_api_key` environment variable) |
-| `ai_model` | Claude model name (e.g., `claude-sonnet-4-20250514`) |
+| Argument        | Description                                                                         |
+|-----------------|-------------------------------------------------------------------------------------|
+| `prompt_file`   | Path to the prompt text file containing your resume information and job description |
+| `claude_api_key`| Your Claude API key (can also be set via `claude_api_key` environment variable)     |
+| `ai_model`      | Claude model name (e.g., `claude-sonnet-4-20250514`)                                |
 
 ### Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--output-file` | `resume.docx` | Name of the generated resume file |
+| Option           | Default      | Description                       |
+|------------------|--------------|-----------------------------------|
+| `--output-file`  | `resume.docx`| Name of the generated resume file |
 
 ### Example
 
 ```bash
-my-command resume_builder/templates/prompt.txt $CLAUDE_API_KEY claude-sonnet-4-20250514 --output-file my_resume.docx
+build-resume resume_builder/templates/prompt.txt $CLAUDE_API_KEY claude-sonnet-4-20250514 --output-file my_resume.docx
 ```
 
 ## Project Structure
 
-```
+```console
 PythontoWordResume/
 ├── resume_builder/
 │   ├── __init__.py
@@ -99,6 +104,7 @@ PythontoWordResume/
 ## Prompt Template
 
 The prompt file should include:
+
 - Your current resume in text format
 - The job description you're targeting
 - The tool will automatically format it using the YAML schema defined in `templates/points.yaml`
