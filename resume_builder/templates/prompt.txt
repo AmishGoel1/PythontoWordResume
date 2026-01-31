@@ -58,6 +58,8 @@ resume_sections:
 personal_details:
   - name: Your Name
     email: your@email.com
+    github: yourgithubusername
+    linkedIn: yourlinkedinusername
 
 Important instructions:
 1. Keep professional_summary under 150 words
@@ -78,7 +80,7 @@ Core Skills
 Administration & Organization: Digital Filing Systems, Resource Allocation, Scheduling, Records Management, Office Logistics, Compliance
 Communication & Reporting: Written Correspondence, Data Entry, Presentation Design, Meeting Facilitation, Interdepartmental Coordination
 Software Proficiency: Microsoft Office Suite (Word, Excel, PowerPoint, Outlook), Cloud Storage Solutions, Project Management Tools
-General Competencies: Time Management, Problem Solving, Customer Service, Adaptability, Detail-Oriented
+General Competencies: Time Management, Problem-Solving, Customer Service, Adaptability, Detail-Oriented
 Languages: English (Fluent), Spanish (Conversational)
 
 Work Experience
@@ -117,7 +119,7 @@ Dean’s List Award – Fall 2024
 Salient skills learned: Project Management, Business Communication, Logistics, Organizational Behavior, Research Methods
 Diploma in General Arts & Science | January 2020 – April 2021
 
-Dean’s List Award- Summer and Fall 2020, Winter 2021
+Dean’s List Award-Summer and Fall 2020, Winter 2021
 
 Certified Administrative Professional
 

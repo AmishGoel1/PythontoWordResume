@@ -1,6 +1,6 @@
-from .prompt_generator import LLMResumeGenerator
+from .prompt_generator import LLMResumeGenerator, save_yaml_to_file
 import yaml
-from docx import Document as doc
+from docx import Document as Doc
 from docx.shared import Inches
 from pathlib import Path
 import typer
@@ -54,7 +54,8 @@ def main(
 
     resume_generator = LLMResumeGenerator(ai_model, claude_api_key)
     yaml_content = resume_generator.generate_yaml_from_prompt(prompt_text=config_data) # pyright: ignore[reportPossiblyUnboundVariable]
-    resume_generator.save_yaml_to_file('points.yaml', yaml_content)
+
+    save_yaml_to_file('points.yaml', yaml_content)
 
     try:
         with open('points.yaml', "r") as file:
@@ -65,17 +66,17 @@ def main(
     except PermissionError:
         print("Permission denied when accessing the file. Please make sure you can access the file")
     except IOError as e:
-        print(f"An I/O error occured {e}")
+        print(f"An I/O error occurred {e}")
 
     resume = Resume.model_validate(data['resume'][0]) # pyright: ignore[reportPossiblyUnboundVariable]
 
-    initialdoc = doc()
+    initialdoc = Doc()
 
     contact = ContactInfo(
         name = data['personal_details'][0]['name'], # pyright: ignore[reportPossiblyUnboundVariable]
         email= data['personal_details'][0]['email'], # pyright: ignore[reportPossiblyUnboundVariable]
-        github = "https://google.com", # pyright: ignore[reportArgumentType]
-        linkedin = "https://google.com" # pyright: ignore[reportArgumentType]
+        github = data['personal_details'][0]['github'], # pyright: ignore[reportArgumentType]
+        linkedin = data['personal_details'][0]['linkedin'] # pyright: ignore[reportArgumentType]
     )
 
     main_section_margin = initialdoc.sections[0]

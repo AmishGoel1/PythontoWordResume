@@ -28,10 +28,15 @@ from anthropic import Anthropic, APIConnectionError, APIStatusError
 
 # api_key = get_env_variable(key='API_KEY')
 
+def save_yaml_to_file(file, yaml_text):
+    with open(file, 'w') as f:
+        yaml.dump(yaml_text, f, sort_keys=False)
+
+
 @dataclass
 class LLMResumeGenerator: 
     """Generate tailored resume using Claude AI"""
-    llmmodel: str
+    model: str
     claude_api_key: str = ''
    
     
@@ -41,8 +46,8 @@ class LLMResumeGenerator:
         try: 
             message = client.messages.create(
                 max_tokens= 3096, 
-                messages=[{'role': 'user', 'content': f"{prompt_text}"}], 
-                model= self.llmmodel
+                messages=[{'role': 'user', 'content': f"{prompt_text}"}],
+                model= self.model
             )
             yaml_content = message.content[0].text[7:-4] # pyright: ignore[reportAttributeAccessIssue, reportPossiblyUnboundVariable]
             print(yaml.dump(yaml_content))
@@ -53,7 +58,3 @@ class LLMResumeGenerator:
             print("Network error. Check your connection.")
         except yaml.YAMLError as e:
             raise ValueError(e)
-
-    def save_yaml_to_file(self, file, yaml_text):
-        with open(file, 'w') as f:
-            yaml.dump(yaml_text, f, sort_keys=False)

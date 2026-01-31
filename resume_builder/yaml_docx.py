@@ -8,42 +8,42 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Pt
 from docx.text.paragraph import Paragraph
 from docx.text.run import Run
-from pydantic import BaseModel, EmailStr, HttpUrl
+from pydantic import BaseModel, EmailStr
 
 
-class skillsclass(BaseModel):
+class Skillsclass(BaseModel):
     category: str
     skill: str
 
-class workclass(BaseModel):
+class Workclass(BaseModel):
     Title: str
     Company: str
     Date: str
     Points: List[str]
 
-class projectclass(BaseModel):
+class Projectclass(BaseModel):
     Name: str
     Points: List[str]
 
-class certificateclass(BaseModel):
+class Certificateclass(BaseModel):
     Name: str
     Issuer: str
 
-class credentialclass(BaseModel):
+class Credentialclass(BaseModel):
     Name: str
     Points: List[str]
 
-class educationclass(BaseModel):
+class Educationclass(BaseModel):
     Name: str
-    Credential: List[credentialclass]
+    Credential: List[Credentialclass]
 
 class Resume(BaseModel):
     summary: str
-    skills: List[skillsclass]
-    education: List[educationclass]
-    certificates: List[certificateclass]
-    work: List[workclass]
-    projects: List[projectclass]
+    skills: List[Skillsclass]
+    education: List[Educationclass]
+    certificates: List[Certificateclass]
+    work: List[Workclass]
+    projects: List[Projectclass]
 
 class SectionRenderBaseClass(ABC):
     """Abstract Class for Rendering a section
@@ -59,7 +59,7 @@ class Sections(Enum):
     PROFESSIONAL_SUMMARY = 'Professional Summary'
     SKILLS = 'Skills'
     EXPERIENCE = 'Experience'
-    EDUCATON = 'Education'
+    EDUCATION = 'Education'
     PROJECTS = 'Projects'
 
 def spacing(paragraph: Paragraph, space_before: Pt, space_after: Pt):
@@ -93,11 +93,11 @@ class ProfessionalSummaryRenderer(SectionRenderBaseClass):
 class SkillRenderer(SectionRenderBaseClass):
     def render(self, doc: Document, data: Resume):
         for skillcategory in data.skills:
-            categoryname = doc.add_paragraph(f"{skillcategory.category}: ")
-            formattingstyles['PointHeading'].apply(categoryname.runs[0])
-            valuerun = categoryname.add_run(f"{skillcategory.skill}")
+            category = doc.add_paragraph(f"{skillcategory.category}: ")
+            formattingstyles['PointHeading'].apply(category.runs[0])
+            valuerun = category.add_run(f"{skillcategory.skill}")
             formattingstyles['Point'].apply(valuerun)
-            categoryname.paragraph_format.space_after = Pt(3)
+            category.paragraph_format.space_after = Pt(3)
         doc.add_paragraph()
 
 class WorkExperienceRenderer(SectionRenderBaseClass):
@@ -144,8 +144,8 @@ class ProjectRenderer(SectionRenderBaseClass):
 class ContactInfo(BaseModel):
     name: str
     email: EmailStr
-    github: HttpUrl
-    linkedin: HttpUrl
+    github: str
+    linkedin: str
 
 # contact = ContactInfo(
 #     name = 'AMISH GOEL',
@@ -154,7 +154,7 @@ class ContactInfo(BaseModel):
 #     linkedin = "https://github.com/AmishGoel1" # type: ignore
 # )
 
-def paragraph_formatting(doc: Document, paragraph_text: str,style: TextStyle, alignment = WD_ALIGN_PARAGRAPH.CENTER):
+def paragraph_formatting(doc: Document, paragraph_text: str, alignment = WD_ALIGN_PARAGRAPH.CENTER):
     para = doc.add_paragraph(paragraph_text)
     TextStyle().apply(para.runs[0])
     para.alignment = alignment
@@ -163,7 +163,7 @@ def paragraph_formatting(doc: Document, paragraph_text: str,style: TextStyle, al
 renderermap: dict[str, SectionRenderBaseClass] = {
     Sections.PROFESSIONAL_SUMMARY.value: ProfessionalSummaryRenderer(),
     Sections.SKILLS.value: SkillRenderer(),
-    Sections.EDUCATON.value: EducationRenderer(),
+    Sections.EDUCATION.value: EducationRenderer(),
     Sections.EXPERIENCE.value: WorkExperienceRenderer(),
     Sections.PROJECTS.value: ProjectRenderer()
 }

@@ -58,17 +58,17 @@ build-resume <prompt_file> <claude_api_key> <ai_model> --output-file resume.docx
 
 ### Arguments
 
-| Argument        | Description                                                                         |
-|-----------------|-------------------------------------------------------------------------------------|
-| `prompt_file`   | Path to the prompt text file containing your resume information and job description |
-| `claude_api_key`| Your Claude API key (can also be set via `claude_api_key` environment variable)     |
-| `ai_model`      | Claude model name (e.g., `claude-sonnet-4-20250514`)                                |
+| Argument         | Description                                                                         |
+|------------------|-------------------------------------------------------------------------------------|
+| `prompt_file`    | Path to the prompt text file containing your resume information and job description |
+| `claude_api_key` | Your Claude API key (can also be set via `claude_api_key` environment variable)     |
+| `ai_model`       | Claude model name (e.g., `claude-sonnet-4-20250514`)                                |
 
 ### Options
 
-| Option           | Default      | Description                       |
-|------------------|--------------|-----------------------------------|
-| `--output-file`  | `resume.docx`| Name of the generated resume file |
+| Option          | Default       | Description                       |
+|-----------------|---------------|-----------------------------------|
+| `--output-file` | `resume.docx` | Name of the generated resume file |
 
 ### Example
 

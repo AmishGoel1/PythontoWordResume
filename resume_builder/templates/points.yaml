@@ -1,4 +1,5 @@
-resume:  
+#file: noinspection SpellCheckingInspection,SpellCheckingInspection
+resume:
   - summary: "Summary text"
     skills:
       - category: "Category 1 Name"
@@ -44,3 +45,5 @@ resume_sections:
 personal_details:
   - name: Your Name
     email: your@email.com
+    github: yourgithubusername
+    linkedIn: yourlinkedinusername
