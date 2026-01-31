@@ -1,32 +1,6 @@
-# import os
 from dataclasses import dataclass
-
 import yaml
 from anthropic import Anthropic, APIConnectionError, APIStatusError
-# from dotenv import find_dotenv, load_dotenv
-
-# load_dotenv('../.env')
-# def get_env_variable(key, default=None):
-#     """
-#     Checks if .env file exists and if the key is present.
-#     Returns the value if found, otherwise returns a default.
-#     """
-#     env_file = find_dotenv()
-#     if not env_file:
-#         print("Warning: .env file not found.")
-#         return default
-
-#     # Load the variables from the discovered .env file
-#     load_dotenv(env_file)
-
-#     # Check for existence of the key within os.environ
-#     if key in os.environ:
-#         return os.getenv(key)
-    
-#     print(f"Warning: Key '{key}' not found in the environment.")
-#     return default
-
-# api_key = get_env_variable(key='API_KEY')
 
 def save_yaml_to_file(file, yaml_text):
     with open(file, 'w') as f:
@@ -38,8 +12,6 @@ class LLMResumeGenerator:
     """Generate tailored resume using Claude AI"""
     model: str
     claude_api_key: str = ''
-   
-    
     
     def generate_yaml_from_prompt(self, prompt_text: str):
         client = Anthropic(api_key = self.claude_api_key) # pyright: ignore[reportUnboundVariable]

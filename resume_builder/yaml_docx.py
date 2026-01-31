@@ -141,18 +141,12 @@ class ProjectRenderer(SectionRenderBaseClass):
                 currentpoint = doc.add_paragraph(f"{point}", style='List Bullet')
                 formattingstyles['Point'].apply(currentpoint.runs[0])
                 spacing(currentpoint, Pt(15), Pt(3))
+
 class ContactInfo(BaseModel):
     name: str
     email: EmailStr
     github: str
     linkedin: str
-
-# contact = ContactInfo(
-#     name = 'AMISH GOEL',
-#     email = 'Jobs@lets.workwithamish.me',
-#     github = "https://google.com", # type: ignore
-#     linkedin = "https://github.com/AmishGoel1" # type: ignore
-# )
 
 def paragraph_formatting(doc: Document, paragraph_text: str, alignment = WD_ALIGN_PARAGRAPH.CENTER):
     para = doc.add_paragraph(paragraph_text)
