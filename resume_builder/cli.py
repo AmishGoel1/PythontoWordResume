@@ -8,7 +8,6 @@ from typing import Annotated
 from .yaml_docx import (
     Resume,
     ContactInfo,
-    # contact,
     formattingstyles,
     paragraph_formatting,
     renderermap,
@@ -88,7 +87,7 @@ def main(
     nametext = paragraph_formatting(initialdoc, contact.name, formattingstyles['Name'])
     nametext.paragraph_format.space_after = 0
 
-    paragraph_formatting(initialdoc, f"{contact.email} | LinkedIn | GitHub", formattingstyles['Links'])
+    paragraph_formatting(initialdoc, f"{contact.email} | linkedin.com/{contact.linkedin} | github.com/{contact.github}", formattingstyles['Links'])
 
     for section in data['resume_sections']: # pyright: ignore[reportPossiblyUnboundVariable]
         heading = initialdoc.add_paragraph(section['type'])
